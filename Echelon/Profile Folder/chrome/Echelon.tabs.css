@@ -17,6 +17,9 @@
 :root[tabsintitlebar][tabs-on-top=true][echelon-style-4] #TabsToolbar {
   padding-inline-end: 0 !important;
 }
+:root:not([lwtheme-image]) #TabsToolbar, :root[echelon-style-4] #TabsToolbar {
+  margin-bottom: -1px !important;
+}
 
 #main-window:not([echelon-appearance-xp]) #TabsToolbar {
   background-image: none !important;
@@ -140,7 +143,7 @@
   margin-inline-end: -2px !important;
 }
 
-html:not([echelon-style-5]) .tabbrowser-tab:first-of-type:last-of-type .tab-close-button {
+#main-window:not([echelon-style-4]) .tabbrowser-tab:first-of-type:last-of-type .tab-close-button {
   display: none !important;
 }
 
@@ -389,30 +392,18 @@ html:not([echelon-style-5]) .tabbrowser-tab:first-of-type:last-of-type .tab-clos
 
 /* Restore tab close animation */
 :root:not([echelon-style-4]) .tabbrowser-tab:not([pinned], [fadein]),
-:root:not([echelon-style-4]) .tab-icon-pending:not([fadein]),
-:root:not([echelon-style-4]) .tab-icon-image:not([fadein]),
-:root:not([echelon-style-4]) .tab-close-button:not([fadein]),
 :root:not([echelon-style-4]) .tabbrowser-tab:not([fadein])::after,
 :root:not([echelon-style-4]) .tab-background:not([fadein]) {
   visibility: visible !important;
-}
-
-:root:not([echelon-style-4]) .tab-label:not([fadein]) {
-  display: block !important;
-}
-
-:root:not([echelon-style-4]) .tab-throbber:not([fadein]) {
-  display: flex !important;
 }
 
 .tab-background:-moz-lwtheme {
   background-image: none !important;
 }
 
-.tabbrowser-tab:last-of-type {
+:root[echelon-style-4] .tabbrowser-tab:last-of-type {
   z-index: 1 !important;
 }
-
-#tabbrowser-arrowscrollbox-periphery {
+:root[echelon-style-4] #tabbrowser-arrowscrollbox-periphery {
   z-index: 0 !important;
 }

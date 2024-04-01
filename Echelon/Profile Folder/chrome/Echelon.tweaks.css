@@ -390,7 +390,8 @@
   display: none !important;
 }
 #main-window[echelon-style-3][echelon-appearance-newlogo=true] #urlbar:not([usertyping=true]) #identity-box.chromeUI #identity-icon {
-  background-image: url("images/identity-icons-brand.png") !important;
+  background-size: cover !important;
+  background-image: url("images/identity-icons-brand.svg") !important;
 }
 #main-window[echelon-style-3][echelon-appearance-newlogo=true] #identity-box.chromeUI #identity-icon-label {
   display: inline-flex !important;
@@ -619,6 +620,24 @@
   background-size: var(--tab-curve-width) 100%, calc(100% - 2 * var(--tab-curve-width)) 100%, var(--tab-curve-width) 100% !important;
 }
 
+@media (min-resolution: 1.25dppx) {
+  #main-window[echelon-style-4] .tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected=true]),
+  #main-window[echelon-style-4] #tabs-newtab-button:hover {
+    background-image: url("images/tab-background-start@2x.png"), url("images/tab-background-middle@2x.png"), url("images/tab-background-end@2x.png") !important;
+  }
+  #main-window[echelon-style-4] .tab-background:is([selected], [multiselected]) {
+    background-image: url("images/tab-active-middle@2x.png"), linear-gradient(transparent 2px, rgba(255, 255, 255, 0.4) 2px, rgba(255, 255, 255, 0.4)), none !important;
+  }
+  #main-window[echelon-style-4][lwtheme-image=true] #tabbrowser-tabs:not([movingtab]) .tab-background:is([selected], [multiselected]):-moz-lwtheme {
+    background-image: url("images/tab-active-middle@2x.png"), linear-gradient(transparent 2px, rgba(255, 255, 255, 0.4) 2px, rgba(255, 255, 255, 0.4)), var(--lwt-header-image) !important;
+  }
+  #main-window[echelon-style-4] .tab-background:is([selected], [multiselected]):before {
+    background-image: url("images/tab-stroke-start@2x.png") !important;
+  }
+  #main-window[echelon-style-4] .tab-background:is([selected], [multiselected]):after {
+    background-image: url("images/tab-stroke-end@2x.png") !important;
+  }
+}
 #main-window[echelon-style-4] #appmenu-button-container {
   display: none !important;
 }
@@ -663,11 +682,11 @@
 }
 
 #main-window[echelon-style-4] #nav-bar {
-  height: 41px !important;
+  height: 42px !important;
 }
 
 #main-window[echelon-style-4] #back-button {
-  margin-inline-start: 6px !important;
+  margin-inline-start: 5px !important;
 }
 
 #main-window[echelon-style-4] #bookmarks-menu-button::after {
@@ -686,6 +705,10 @@
   width: 31px !important;
   border-right: 0 !important;
   margin-inline-end: 0 !important;
+}
+
+#main-window[echelon-style-4]:not([customizing]) #TabsToolbar:not(:-moz-lwtheme) {
+  background-image: linear-gradient(to top, hsla(209, 67%, 12%, 0.35) 1px, rgba(0, 0, 0, 0.05) 1px, transparent 50%) !important;
 }
 
 #main-window[privatebrowsingnewindicator][echelon-style-4] .private-browsing-indicator {
@@ -1620,17 +1643,19 @@
 }
 
 /* ::::: lwtheme support ::::: */
-:root:not([default-light-theme], [default-dark-theme]) #navigator-toolbox:-moz-lwtheme {
-  background-image: none !important;
-}
-:root:not([default-light-theme], [default-dark-theme]) #navigator-toolbox:-moz-lwtheme #nav-bar {
-  background-color: transparent !important;
-  background-image: none !important;
-  background-repeat: var(--lwt-background-tiling) !important;
-  background-position: var(--lwt-background-alignment) !important;
-}
-:root:not([default-light-theme], [default-dark-theme]) #navigator-toolbox:-moz-lwtheme #PersonalToolbar {
-  background: transparent !important;
+@media not (-moz-platform: macos) {
+  :root:not([default-light-theme], [default-dark-theme]) #navigator-toolbox:-moz-lwtheme {
+    background-image: none !important;
+  }
+  :root:not([default-light-theme], [default-dark-theme]) #navigator-toolbox:-moz-lwtheme #nav-bar {
+    background-color: transparent !important;
+    background-image: none !important;
+    background-repeat: var(--lwt-background-tiling) !important;
+    background-position: var(--lwt-background-alignment) !important;
+  }
+  :root:not([default-light-theme], [default-dark-theme]) #navigator-toolbox:-moz-lwtheme #PersonalToolbar {
+    background: transparent !important;
+  }
 }
 :root:not([default-light-theme], [default-dark-theme]) #TabsToolbar #firefox-view-button[open]:not(:focus-visible) > .toolbarbutton-icon:-moz-lwtheme,
 :root:not([default-light-theme], [default-dark-theme]) .tab-background[selected]:not([multiselected=true]):-moz-lwtheme {

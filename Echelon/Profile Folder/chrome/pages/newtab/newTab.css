@@ -1,23 +1,20 @@
+/* content */
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-input {
-  margin: 0;
+ input {
+  font: message-box !important;
+  font-size: 16px !important;
 }
 
-html {
-  width: 100%;
-  height: 100%;
+input[type=button] {
+  cursor: pointer;
 }
 
-body {
-  font: message-box;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  background-color: #F9F9F9;
+/* SCROLLBOX */
+#newtab-scrollbox {
   display: flex;
   position: relative;
   flex: 1;
@@ -25,18 +22,15 @@ body {
   flex-direction: column;
 }
 
-input {
-  font: message-box;
-  font-size: 16px;
-}
-
-input[type=button] {
-  cursor: pointer;
+#newtab-scrollbox:not([page-disabled]) {
+  overflow: auto;
 }
 
 /* UNDO */
 #newtab-undo-container {
   transition: opacity 100ms ease-out;
+  display: flex;
+  margin-bottom: 26px; /* 32 - 6 search form top "padding" */
   align-items: center;
   justify-content: center;
 }
@@ -46,16 +40,15 @@ input[type=button] {
   pointer-events: none;
 }
 
-/* CUSTOMIZE */
-#newtab-customize-button {
+/* TOGGLE */
+#newtab-toggle {
   position: absolute;
-  top: 10px;
-  right: 20px;
-  z-index: 101;
+  top: 12px;
+  right: 12px;
 }
 
-#newtab-customize-button:dir(rtl) {
-  left: 20px;
+#newtab-toggle:-moz-locale-dir(rtl) {
+  left: 12px;
   right: auto;
 }
 
@@ -67,21 +60,23 @@ input[type=button] {
   flex-direction: column;
 }
 
+#newtab-margin-top {
+  min-height: 50px;
+  max-height: 80px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
 #newtab-margin-undo-container {
   display: flex;
-  left: 6px;
-  position: absolute;
-  top: 6px;
-  z-index: 1;
+  justify-content: center;
 }
 
-#newtab-margin-undo-container:dir(rtl) {
-  left: auto;
-  right: 6px;
-}
-
-#newtab-undo-close-button:dir(rtl) {
-  float:left;
+#newtab-margin-bottom {
+  min-height: 40px;
+  max-height: 100px;
+  flex: 1;
 }
 
 #newtab-horizontal-margin {
@@ -104,15 +99,18 @@ input[type=button] {
 }
 
 .newtab-side-margin {
-  min-width: 10px;
+  min-width: 40px;
+  max-width: 300px;
   flex: 1;
 }
 
 /* GRID */
 #newtab-grid {
+  display: flex;
   flex: 5;
-  overflow: hidden;
-  text-align: center;
+  flex-direction: column;
+  min-width: 600px;
+  min-height: 400px;
   transition: 100ms ease-out;
   transition-property: opacity;
 }
@@ -126,28 +124,17 @@ input[type=button] {
   pointer-events: none;
 }
 
-body:not(.compact) #topsites-heading {
-  display: none;
+/* ROWS */
+.newtab-row {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }
 
-/*
- * If you change the sizes here, make sure you
- * change the preferences:
- * toolkit.pageThumbs.minWidth
- * toolkit.pageThumbs.minHeight
- */
 /* CELLS */
 .newtab-cell {
   display: flex;
-  height: 210px;
-  margin: 20px 10px 35px;
-  width: 290px;
-}
-
-body.compact .newtab-cell {
-  width: 110px;
-  height: 110px;
-  margin: 12px;
+  flex: 1;
 }
 
 /* SITES */
@@ -178,26 +165,32 @@ body.compact .newtab-cell {
   bottom: 0;
 }
 
-/* TITLES */
-.newtab-title {
-  overflow: hidden;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  bottom: 0;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  vertical-align: middle;
+.newtab-thumbnail {
+  opacity: .8;
+  transition: opacity 100ms ease-out;
 }
 
+.newtab-thumbnail[dragged],
+.newtab-link:-moz-focusring > .newtab-thumbnail,
+.newtab-cell:not([ignorehover]) > .newtab-site:hover > .newtab-link > .newtab-thumbnail {
+  opacity: 1;
+}
+
+/* TITLES */
 .newtab-title {
+  position: absolute;
   left: 0;
-  padding: 0 4px;
+  right: 0;
+  bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* CONTROLS */
 .newtab-control {
   position: absolute;
+  top: 4px;
   opacity: 0;
   transition: opacity 100ms ease-out;
 }
@@ -217,6 +210,31 @@ body.compact .newtab-cell {
   }
 }
 
+.newtab-control-sponsored:-moz-locale-dir(rtl),
+.newtab-control-pin:-moz-locale-dir(ltr),
+.newtab-control-block:-moz-locale-dir(rtl) {
+  left: 4px;
+}
+
+.newtab-control-sponsored:-moz-locale-dir(ltr),
+.newtab-control-block:-moz-locale-dir(ltr),
+.newtab-control-pin:-moz-locale-dir(rtl) {
+  right: 4px;
+}
+
+.newtab-control.newtab-control-sponsored {
+  bottom: -20px;
+  height: 14px;
+  -moz-margin-end: -5px;
+  opacity: 1;
+  top: auto;
+  width: 14px;
+}
+
+.newtab-site:not([type=sponsored]) .newtab-control-sponsored {
+  display: none;
+}
+
 /* DRAG & DROP */
 
 /*
@@ -231,17 +249,25 @@ body.compact .newtab-cell {
   opacity: 0.01;
 }
 
+/* SPONSORED PANEL */
+#sponsored-panel {
+  width: 330px;
+}
+
+#sponsored-panel description {
+  margin: 0;
+}
+
+#sponsored-panel .text-link {
+  margin: 12px 0 0;
+}
+
 /* SEARCH */
 #newtab-search-container {
   display: flex;
   position: relative;
+  align-items: center;
   justify-content: center;
-  margin: 55px 0 15px;
-}
-
-body.compact #newtab-search-container {
-  margin-top: 0;
-  margin-bottom: 80px;
 }
 
 #newtab-search-container[page-disabled] {
@@ -251,99 +277,98 @@ body.compact #newtab-search-container {
 
 #newtab-search-form {
   display: flex;
-  position: relative;
-  height: 36px;
-  flex: 1;
-  max-width: 600px; /* 2 * (290 cell width + 10 cell margin) */
+  flex: 5;
+  flex-direction: row;
+  align-items: center;
+  height: 44px; /* 32 + 6 logo top "padding" + 6 logo bottom "padding" */
+  margin-bottom: 10px; /* 32 - 16 tiles top margin - 6 logo bottom "padding" */
 }
 
-#newtab-search-icon {
-  border: 1px transparent;
-  padding: 0;
-  margin: 0;
-  width: 36px;
-  height: 36px;
-  background: url("chrome://userchrome/content/pages/newtab/images/search-indicator-magnifying-glass.svg") center center no-repeat;
-  position: absolute;
+#newtab-search-logo {
+  display: flex;
+  width: 77px; /* 65 image width + 6 left "padding" + 6 right "padding" */
+  height: 38px; /* 26 image height + 6 top "padding" + 6 bottom "padding" */
+  border: 1px solid transparent;
+  -moz-margin-end: 8px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 65px 26px;
+}
+
+#newtab-search-logo[hidden] {
+  display: none;
+}
+
+#newtab-search-logo[active],
+#newtab-search-logo:hover {
+  background-color: #e9e9e9;
+  border: 1px solid rgb(226, 227, 229);
+  border-radius: 2.5px;
 }
 
 #newtab-search-text {
+  height: 32px;
   flex: 1;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-inline-start: 34px;
-  padding-inline-end: 8px;
+
+  padding: 0 8px;
   background: hsla(0,0%,100%,.9) padding-box;
   border: 1px solid;
-  border-spacing: 0;
-  border-radius: 2px 0 0 2px;
   border-color: hsla(210,54%,20%,.15) hsla(210,54%,20%,.17) hsla(210,54%,20%,.2);
   box-shadow: 0 1px 0 hsla(210,65%,9%,.02) inset,
               0 0 2px hsla(210,65%,9%,.1) inset,
               0 1px 0 hsla(0,0%,100%,.2);
+  border-radius: 2.5px 0 0 2.5px;
   color: inherit;
-  unicode-bidi: plaintext;
 }
 
-#newtab-search-text:dir(rtl) {
-  border-radius: 0 2px 2px 0;
+#newtab-search-text:-moz-dir(rtl) {
+  border-radius: 0 2.5px 2.5px 0;
 }
 
-#newtab-search-text[aria-expanded="true"] {
-  border-radius: 2px 0 0 0;
-}
-
-#newtab-search-text[aria-expanded="true"]:dir(rtl) {
-  border-radius: 0 2px 0 0;
-}
-
-#newtab-search-text[keepfocus],
 #newtab-search-text:focus,
 #newtab-search-text[autofocus] {
   border-color: hsla(206,100%,60%,.6) hsla(206,76%,52%,.6) hsla(204,100%,40%,.6);
 }
 
 #newtab-search-submit {
-  margin-inline-start: -1px;
-  color: transparent;
-  background: url("chrome://userchrome/content/pages/newtab/images/search-arrow-go.svg") center center no-repeat, linear-gradient(hsla(0,0%,100%,.8), hsla(0,0%,100%,.1)) padding-box;
-  -moz-context-properties: fill;
-  fill: #616366;
-  padding: 0;
+  height: 32px;
+
+  -moz-margin-start: -1px;
+  background: linear-gradient(hsla(0,0%,100%,.8), hsla(0,0%,100%,.1)) padding-box;
+  padding: 0 9px;
   border: 1px solid;
-  border-color: hsla(210,54%,20%,.15) hsla(210,54%,20%,.17) hsla(210,54%,20%,.2) transparent;
-  border-radius: 0 2px 2px 0;
+  border-color: hsla(210,54%,20%,.15) hsla(210,54%,20%,.17) hsla(210,54%,20%,.2);
+  -moz-border-start: 1px solid transparent;
+  border-radius: 0 2.5px 2.5px 0;
   box-shadow: 0 0 2px hsla(0,0%,100%,.5) inset,
               0 1px 0 hsla(0,0%,100%,.2);
+  color: inherit;
   cursor: pointer;
   transition-property: background-color, border-color, box-shadow;
   transition-duration: 150ms;
-  width: 50px;
 }
 
-#newtab-search-submit:dir(rtl) {
-  transform: scaleX(-1);
+#newtab-search-submit:-moz-dir(rtl) {
+  border-radius: 2.5px 0 0 2.5px;
 }
 
 #newtab-search-text:focus + #newtab-search-submit,
 #newtab-search-text + #newtab-search-submit:hover,
 #newtab-search-text[autofocus] + #newtab-search-submit {
   border-color: #59b5fc #45a3e7 #3294d5;
+  color: white;
 }
 
 #newtab-search-text:focus + #newtab-search-submit,
-#newtab-search-text[keepfocus] + #newtab-search-submit,
 #newtab-search-text[autofocus] + #newtab-search-submit {
-  background-image: url("chrome://userchrome/content/pages/newtab/images/search-arrow-go.svg"), linear-gradient(#4cb1ff, #1793e5);
-  fill: white;
+  background-image: linear-gradient(#4cb1ff, #1793e5);
   box-shadow: 0 1px 0 hsla(0,0%,100%,.2) inset,
               0 0 0 1px hsla(0,0%,100%,.1) inset,
               0 1px 0 hsla(210,54%,20%,.03);
 }
 
 #newtab-search-text + #newtab-search-submit:hover {
-  background-image: url("chrome://userchrome/content/pages/newtab/images/search-arrow-go.svg"), linear-gradient(#4cb1ff, #1793e5);
-  fill: white;
+  background-image: linear-gradient(#66bdff, #0d9eff);
   box-shadow: 0 1px 0 hsla(0,0%,100%,.2) inset,
               0 0 0 1px hsla(0,0%,100%,.1) inset,
               0 1px 0 hsla(210,54%,20%,.03),
@@ -356,216 +381,59 @@ body.compact #newtab-search-container {
   transition-duration: 0ms;
 }
 
-/* CUSTOMIZE */
-#newtab-customize-overlay {
-  opacity: 0;
-  display: none;
-  width: 100%;
-  height: 100%;
-  background: #F9F9F9;
-  z-index: 100;
-  position: fixed;
-  transition: opacity .07s linear;
+#newtab-search-panel .panel-arrowcontent {
+  -moz-padding-start: 0;
+  -moz-padding-end: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  background: rgb(248, 250, 251);
 }
 
-.newtab-customize-panel-container {
-  position: absolute;
-  margin-right: 40px;
-  right: 0;
+.newtab-search-panel-engine {
+  align-items: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  -moz-padding-start: 24px;
+  -moz-padding-end: 24px;
 }
 
-.newtab-customize-panel-container:dir(rtl) {
-  right: auto;
-  left: 0;
+.newtab-search-panel-engine:not(:last-child) {
+  border-bottom: 1px solid #ccc;
 }
 
-#newtab-customize-panel {
-  z-index: 999;
-  margin-top: 55px;
-  min-width: 270px;
-  position: absolute;
-  top: 100%;
-  right: -25px;
-  filter: drop-shadow(0 0 1px rgba(0,0,0,0.4)) drop-shadow(0 3px 4px rgba(0,0,0,0.4));
-  transition: all 200ms ease-in-out;
-  transform-origin: top right;
-  transform: translate(-30px, -20px) scale(0) translate(30px, 20px);
+.newtab-search-panel-engine > image {
+  -moz-margin-end: 8px;
+  width: 16px;
+  height: 16px;
+  list-style-image: url("chrome://mozapps/skin/places/defaultFavicon.png");
 }
 
-#newtab-customize-panel:dir(rtl) {
-  transform-origin: 40px top 20px;
+.newtab-search-panel-engine > label {
+  -moz-padding-start: 0;
+  -moz-margin-start: 0;
+  color: rgb(130, 132, 133);
 }
 
-#newtab-customize-panel:dir(rtl),
-#newtab-customize-panel-anchor:dir(rtl) {
-  left: 15px;
-  right: auto;
+.newtab-search-panel-engine[selected] {
+  background: url("chrome://global/skin/menu/shared-menu-check.png") center left 4px no-repeat transparent;
 }
 
-#newtab-customize-panel[open="true"] {
-  transform: translate(-30px, -20px) scale(1) translate(30px, 20px);
-}
-
-#newtab-customize-panel-anchor {
-  width: 18px;
-  height: 18px;
-  background-color: white;
-  transform: rotate(45deg);
-  position: absolute;
-  top: -6px;
-  right: 15px;
-}
-
-#newtab-customize-title {
-  color: #7A7A7A;
-  font-size: 14px;
-  background-color: #FFFFFF;
-  line-height: 25px;
-  padding: 15px;
-  font-weight: 600;
-  cursor: default;
-  border-radius: 5px 5px 0px 0px;
-  max-width: 300px;
-  overflow: hidden;
-  display: table-cell;
-  border-top: none;
-}
-
-#newtab-customize-panel-inner-wrapper {
-  background-color: #FFFFFF;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-#newtab-customize-title > label {
-  cursor: default;
-}
-
-#newtab-customize-panel > .panel-arrowcontainer > .panel-arrowcontent {
-  padding: 0;
-}
-
-.newtab-customize-panel-item {
-  line-height: 25px;
-  padding: 15px;
-  padding-inline-start: 40px;
-  font-size: 14px;
-  cursor: pointer;
-  max-width: 300px;
-}
-
-.newtab-customize-panel-item:not(:first-child) {
-  border-top: 1px solid threedshadow;
-}
-
-.newtab-customize-panel-subitem > label,
-.newtab-customize-panel-item > label,
-.newtab-customize-complex-option {
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-}
-
-.newtab-customize-panel-item,
-.newtab-customize-complex-option {
-  display: block;
-  text-align: start;
-  background-color: #F9F9F9;
-}
-
-.newtab-customize-panel-item[selected]:dir(rtl){
-  background-position: right 15px center;
-}
-
-.newtab-customize-complex-option:hover > .selectable:not([selected]):dir(rtl),
-.selectable:not([selected]):hover:dir(rtl) {
-  background-position: right 15px center;
-}
-
-.newtab-customize-panel-item:not([selected]),
-.newtab-customize-panel-subitem:not([selected]){
-  color: #7A7A7A;
-}
-
-.newtab-customize-panel-item:not([selected]):hover {
-  color: #FFFFFF;
-  background-color: #4A90E2
-}
-
-.newtab-customize-complex-option:hover > .selectable:not([selected]),
-.selectable:not([selected]):hover {
-  background: url("chrome://userchrome/content/pages/newtab/images/shared-menu-check-hover.svg") no-repeat #FFFFFF;
-  background-size: 16px 16px;
-  background-position: 15px 15px;
-  color: #171F26;
-}
-
-.newtab-customize-complex-option:hover > .selectable:not([selected]) + .newtab-customize-panel-subitem {
-  background-color: #FFFFFF;
-}
-
-.newtab-customize-panel-item[selected] {
-  background: url("chrome://userchrome/content/pages/newtab/images/shared-menu-check-active.svg") no-repeat transparent;
-  background-size: 16px 16px;
-  background-position: 15px 15px;
-  color: black;
-  font-weight: 600;
-}
-
-.newtab-customize-panel-subitem > .checkbox {
-  width: 18px;
-  height: 18px;
-  background-color: #FFFFFF;
-  border: solid 1px threedshadow;
-}
-
-.newtab-customize-panel-subitem[selected] > .checkbox {
-  background: url("chrome://userchrome/content/pages/newtab/images/shared-menu-check-black.svg") no-repeat #FFFFFF;
-  background-size: 9px 9px;
-  background-position: center;
-  color: #333333;
-}
-
-.newtab-customize-panel-subitem {
-  font-size: 12px;
-  padding: 0px 15px 15px 15px;
-  padding-inline-start: 40px;
-  display: block;
-  max-width: 300px;
-}
-
-.newtab-customize-panel-subitem > label {
-  padding: 0px 10px;
-  line-height: 20px;
-  vertical-align: middle;
-  max-width: 225px;
-}
-
-.newtab-customize-panel-superitem {
-  line-height: 20px;
-  border-bottom: medium none !important;
-  padding: 15px 15px 10px 15px;
-  padding-inline-start: 40px;
-  border-top: 1px solid threedshadow;
-}
-
-.contentSearchSuggestionTable {
-  font: message-box;
-  font-size: 16px;
-}
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+/* skin (windows) */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
  :root {
-  appearance: none;
+  -moz-appearance: none;
   font-size: 75%;
   background-color: transparent;
+}
+
+/* SCROLLBOX */
+#newtab-scrollbox:not([page-disabled]),
+#newtab-scrollbox:not([page-disabled]) #newtab-margin-bottom {
+  color: rgb(0,0,0);
+  background-color: hsl(0,0%,95%);
 }
 
 /* UNDO */
@@ -583,7 +451,9 @@ body.compact #newtab-search-container {
 }
 
 .newtab-undo-button {
-  appearance: none;
+  -moz-appearance: none;
+  color: -moz-nativehyperlinktext;
+  color: rgb(0,102,204);
   cursor: pointer;
   padding: 0;
   margin: 0 4px;
@@ -601,108 +471,78 @@ body.compact #newtab-search-container {
   outline: 1px dotted;
 }
 
+.newtab-undo-button > .button-box {
+  padding: 0;
+}
+
 #newtab-undo-close-button {
-  appearance: none;
+  -moz-appearance: none;
   padding: 0;
   border: none;
 }
 
-#newtab-undo-close-button {
-  appearance: none;
-  padding: 0;
-  border: none;
-  height: 16px;
+#newtab-undo-close-button > .toolbarbutton-text {
+  display: none;
+}
+
+#newtab-undo-close-button:-moz-focusring {
+  outline: 1px dotted;
+}
+
+/* TOGGLE */
+#newtab-toggle {
   width: 16px;
-  float: right;
-  right: 0;
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/close.png), 0, 16, 16, 0);
-  background-color: transparent;
-}
-
-#newtab-undo-close-button:hover {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/close.png), 0, 32, 16, 16);
-}
-
-#newtab-undo-close-button:hover:active {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/close.png), 0, 48, 16, 32);
-}
-
-/* CUSTOMIZE */
-#newtab-customize-button,
-.newtab-customize {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 32, 32, 0);
-  background-size: 28px;
-  height: 38px;
-  width: 38px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: transparent;
-  border: none;
-}
-
-.newtab-customize {
-  height: 28px;
-  width: 28px;
-}
-
-#newtab-customize-button {
-  font-size: 28px;
+  height: 16px;
   padding: 0;
-  /* only display the text label when CSS backgrounds are disabled (e.g. in high contrast mode) */
-  color: transparent;
+  border: none;
+  background: -216px 0 transparent url(chrome://userchrome/content/pages/newtab/images/controls.png);
 }
 
-#newtab-customize-button:-moz-any(:hover, :active, [active]) {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 64, 32, 32);
-  background-color: #FFFFFF;
-  border: solid 1px #CCCCCC;
-  border-radius: 2px;
+#newtab-toggle[page-disabled] {
+  background-position: -232px 0;
 }
 
-/* GRID */
-#topsites-heading {
-  color: #7A7A7A;
-  font-size: 1em;
-  font-weight: normal;
-  /* Position the heading such that it doesn't affect how many cells we
-     can fit into the grid. */
-  position: absolute;
-  /* The top margin moves the heading away from the grid.
-     The horizontal margin aligns the heading with the cells. */
-  margin: -1em 10px 0;
+/* ROWS */
+.newtab-row {
+  margin-bottom: 20px;
+}
+
+.newtab-row:last-child {
+  margin-bottom: 0;
 }
 
 /* CELLS */
 .newtab-cell {
-  --cell-corner-radius: 8px;
+  -moz-margin-end: 20px;
   background-color: rgba(255,255,255,.2);
-  border-radius: var(--cell-corner-radius);
-}
-
-body.compact .newtab-cell {
-  --cell-corner-radius: 2px;
+  border: 1px solid;
+  border-color: rgba(8,22,37,.12) rgba(8,22,37,.14) rgba(8,22,37,.16);
+  border-radius: 1px;
+  transition: border-color 100ms ease-out;
 }
 
 .newtab-cell:empty {
-  outline: 2px dashed #c1c1c1;
-  outline-offset: -2px;
-  -moz-outline-radius: var(--cell-corner-radius);
+  border: 1px dashed;
+  border-color: rgba(8,22,37,.15) rgba(8,22,37,.17) rgba(8,22,37,.19);
+}
+
+.newtab-cell:last-child {
+  -moz-margin-end: 0;
+}
+
+.newtab-cell:hover:not(:empty):not([dragged]):not([ignorehover]) {
+  border-color: rgba(8,22,37,.25) rgba(8,22,37,.27) rgba(8,22,37,.3);
 }
 
 /* SITES */
 .newtab-site {
-  border-radius: var(--cell-corner-radius);
-  box-shadow: 0 1px 3px #c1c1c1;
   text-decoration: none;
   transition-property: top, left, opacity, box-shadow, background-color;
 }
 
-.newtab-cell:not([ignorehover]) .newtab-control:hover ~ .newtab-link,
-.newtab-cell:not([ignorehover]) .newtab-link:hover,
+.newtab-cell:not([ignorehover]) > .newtab-site:hover,
 .newtab-site[dragged] {
-  border: 2px solid white;
-  box-shadow: 0 0 6px 1px #add6ff;
-  margin: -2px;
+  box-shadow: 0 0 10px rgba(8,22,37,.3);
 }
 
 .newtab-site[dragged] {
@@ -710,196 +550,82 @@ body.compact .newtab-cell {
   background-color: rgb(242,242,242);
 }
 
-/* LINKS */
-.newtab-link {
-  border-radius: var(--cell-corner-radius);
-  overflow: hidden;
-}
-
-/***
- * If you change the sizes here, change them in newTab.css
- * and the preference values:
- * toolkit.pageThumbs.minWidth
- * toolkit.pageThumbs.minHeight
- */
 /* THUMBNAILS */
 .newtab-thumbnail {
   background-origin: padding-box;
   background-clip: padding-box;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 180px;
-  transition: opacity 100ms ease-out;
 }
 
-body.compact .newtab-thumbnail {
-  height: 100%;
-  border-radius: calc(var(--cell-corner-radius) + 1px);
-  outline: 1px solid hsla(0,0%,0%,.1);
-  -moz-outline-radius: var(--cell-corner-radius);
-  outline-offset: -1px;
-}
-
-.newtab-thumbnail.placeholder {
-  color: white;
-  font-size: 85px;
-  line-height: 200%;
-}
-
-body.compact .newtab-thumbnail.placeholder {
-  font-size: 45px;
-}
-
-.newtab-cell:not([ignorehover]) .newtab-site:hover .newtab-thumbnail.enhanced-content {
-  opacity: 0;
-}
-
-.newtab-site[type=affiliate] .newtab-thumbnail {
+.newtab-site[type=affiliate] .newtab-thumbnail,
+.newtab-site[type=organic] .newtab-thumbnail,
+.newtab-site[type=sponsored] .newtab-thumbnail {
   background-position: center center;
-}
-
-body.compact .newtab-site[type=affiliate] .newtab-thumbnail {
-  background-position: center 30%;
-}
-
-.newtab-site[type=affiliate] .newtab-thumbnail {
   background-size: auto;
 }
 
 /* TITLES */
-
 .newtab-title {
-  background-color: #F2F2F2;
-  font-size: 13px;
-  line-height: 30px;
-  border: 1px solid #fff;
-  border-radius: 0 0 var(--cell-corner-radius) var(--cell-corner-radius);
+  padding: 0 8px;
+  background-color: rgba(248,249,251,.95);
+  color: #1f364c;
+  line-height: 24px;
 }
 
-body.compact .newtab-title {
-  background-color: hsla(0,0%,100%,.85);
-  font-size: 12px;
-  line-height: 21px;
-  border: 1px solid hsla(0,0%,80%,.8);
-  border-top-color: hsla(0,0%,0%,.1);
-  background-clip: padding-box;
-}
-
-.newtab-title {
-  color: #5c5c5c;
-}
-
-body.compact .newtab-title {
-  color: black;
-}
-
-body:not(.compact) .newtab-site:hover .newtab-title {
-  color: white;
-  background-color: #333;
-  border-color: #333;
-  border-top-color: white;
-}
-
-body.compact .newtab-site:hover .newtab-title {
-  color: white;
-  background-color: hsla(0,0%,20%,.85);
-  border-color: hsla(0,0%,0%,.8);
-  border-top-color: white;
-}
-
-.newtab-site[pinned] .newtab-title {
-  padding-inline-start: 24px;
-}
-
-.newtab-site[pinned] .newtab-title::before {
-  background-image: -moz-image-rect(url("chrome://userchrome/content/pages/newtab/images/controls.svg"), 7, 278, 28, 266);
-  background-size: 10px;
-  content: "";
-  height: 17px;
-  left: 0;
-  position: absolute;
-  width: 10px;
-  margin-left: 8px;
-  margin-top: 6px;
-}
-
-.newtab-site[pinned] .newtab-title:dir(rtl)::before {
-  left: auto;
-  right: 0;
+.newtab-site[type=sponsored] .newtab-title {
+  -moz-padding-end: 24px;
 }
 
 /* CONTROLS */
 .newtab-control {
-  background-color: transparent;
-  background-size: 24px;
-  border: none;
-  height: 24px;
   width: 24px;
-  top: 4px;
+  height: 24px;
+  padding: 1px 2px 3px;
+  border: none;
+  background: transparent url(chrome://userchrome/content/pages/newtab/images/controls.png);
 }
 
-.newtab-control-pin:dir(ltr),
-.newtab-control-block:dir(rtl) {
-  left: 4px;
+.newtab-control-pin:hover {
+  background-position: -24px 0;
 }
 
-.newtab-control-block:dir(ltr),
-.newtab-control-pin:dir(rtl) {
-  right: 4px;
+.newtab-control-pin:active {
+  background-position: -48px 0;
 }
 
-body.compact .newtab-control {
-  top: -8px;
+.newtab-control-pin[pinned] {
+  background-position: -72px 0;
 }
 
-body.compact .newtab-control-pin:dir(ltr),
-body.compact .newtab-control-block:dir(rtl) {
-  left: -8px;
+.newtab-control-pin[pinned]:hover {
+  background-position: -96px 0;
 }
 
-body.compact .newtab-control-block:dir(ltr),
-body.compact .newtab-control-pin:dir(rtl) {
-  right: -8px;
-}
-
-.newtab-control-pin,
-.newtab-site[pinned] .newtab-control-pin:hover:active {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 96, 32, 64);
-}
-
-.newtab-control-pin:hover,
-.newtab-site[pinned] .newtab-control-pin:hover {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 160, 32, 128);
-}
-
-.newtab-control-pin:hover:active,
-.newtab-site[pinned] .newtab-control-pin {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 128, 32, 96);
+.newtab-control-pin[pinned]:active {
+  background-position: -120px 0;
 }
 
 .newtab-control-block {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 192, 32, 160);
+  background-position: -144px 0;
 }
 
 .newtab-control-block:hover {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 224, 32, 192);
+  background-position: -168px 0;
 }
 
-.newtab-control-block:hover:active {
-  background-image: -moz-image-rect(url(chrome://userchrome/content/pages/newtab/images/controls.svg), 0, 256, 32, 224);
+.newtab-control-block:active {
+  background-position: -192px 0;
 }
 
-
-.newtab-undo-button {
-  color: rgb(0,102,204);
+.newtab-control-sponsored {
+  background-position: -249px -1px;
 }
 
-.newtab-undo-button > .button-box {
-  padding: 0;
+.newtab-control-sponsored:hover {
+  background-position: -265px -1px;
 }
 
-.newtab-title {
-  font: message-box;
-  font-size: 13px;
-  line-height: 30px;
+.newtab-control-sponsored[panelShown] {
+  background-position: -281px -1px;
 }
