@@ -66,6 +66,7 @@
                                     <menuitem label="&general.appearance.os.vista;" value="win7"/>
                                     <menuitem label="&general.appearance.os.eight;" value="win8" australis-only="true"/>
                                     <menuitem label="&general.appearance.os.ten;" value="win10" australis-only="true"/>
+                                    <menuitem label="&general.appearance.os.linux;" value="linux"/>
                                 </menupopup>
                             </menulist>
                         </html:div>
@@ -87,7 +88,7 @@
                         <checkbox native="" label="&general.appearance.australisFog;" class="option" data-type="bool" data-option="Echelon.Appearance.Australis.EnableFog" australis-only="true"/>
                         <checkbox native="" label="&general.appearance.themeDevTools;" class="option" data-type="bool" data-option="Echelon.Appearance.DevTools" change-requires-restart="true"/>
                     </groupbox>
-                    <groupbox>
+                    <groupbox id="firefox-button-gbox">
                         <caption>&general.firefoxButton;</caption>
                         <checkbox native="" label="&general.firefoxButton.useCustomStyle;" class="option" data-type="bool" data-option="Echelon.FirefoxButton.CustomStyle" change-requires-restart="true"/>
                         <html:div class="option-container">
@@ -233,6 +234,7 @@
                                     <html:span class="credits-section-desc">&about.credits.developers;</html:span>
                                     <html:ul class="credits-list">
                                         <html:li>ephemeralViolette</html:li>
+                                        <html:li><label is="text-link" href="https://github.com/kawapure">kawapure</label></html:li>
                                         <html:li><label is="text-link" href="https://github.com/aubymori/">aubymori</label></html:li>
                                     </html:ul>
                                 </html:li>
@@ -242,7 +244,8 @@
                                     <html:span class="credits-section-desc">&about.credits.honorableMentions;</html:span>
                                     <html:ul class="credits-list">
                                         <html:li><label is="text-link" href="https://github.com/YukisCoffee/">YukisCoffee</label></html:li>
-                                        <html:li><label is="text-link" href="https://github.com/angelbruni/">angelbruni</label></html:li>
+                                        <html:li><label is="text-link" href="https://github.com/kfh83/">kfh83</label></html:li>
+                                        <html:li><label is="text-link" href="https://github.com/Erizur/">Erizur</label></html:li>
                                         <html:li>&about.credits.honorableMentions.privateTesters;</html:li>
                                     </html:ul>
                                 </html:li>

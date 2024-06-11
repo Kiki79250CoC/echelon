@@ -1,3 +1,5 @@
+@namespace html url("http://www.w3.org/1999/xhtml");
+
 /* ::::: Aero blue style ::::: */
 
 :root[echelon-appearance-blue] {
@@ -984,15 +986,17 @@
         }
     }
 
-    &:not([echelon-style-4][tabsintitlebar]) #main-menubar>menu {
+    &:not([echelon-style-4][tabsintitlebar], [lwtheme-brighttext]) #main-menubar>menu {
         color: WindowText !important;
 
-        &[_moz-menuactive="true"] {
-            color: HighlightText !important;
-        }
+        @media not (-moz-windows-classic) {
+            &[_moz-menuactive="true"] {
+                color: HighlightText !important;
+            }
 
-        &:-moz-window-inactive {
-            color: ThreeDShadow !important;
+            &:-moz-window-inactive {
+                color: ThreeDShadow !important;
+            }
         }
     }
 
@@ -1168,5 +1172,15 @@
                 padding: 1px !important;
             }
         }
+    }
+}
+
+html|*.pointerlockfswarning {
+    &[data-identity="verifiedDomain"]::before {
+        background-image: url("images/secure.svg") !important;
+    }
+
+    &[data-identity="unknownIdentity"]::before {
+        background-image: url("images/insecure.svg") !important;
     }
 }
